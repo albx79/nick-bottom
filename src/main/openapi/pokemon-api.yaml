@@ -1,0 +1,35 @@
+openapi: 3.0.1
+info:
+  title: Nick Bottom
+  description: |
+    Retrieve pokemon descriptions, written as Shakespeare would have
+  contact:
+    email: albx79@gmail.com
+  version: 1.0.0
+paths:
+  /pokemon/{name}:
+    get:
+      summary: get pokemon description
+      operationId: getDescription
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        200:
+          description: Operation succeeded
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Pokemon' }
+        404:
+          description: Pokemon not found
+          content: {}
+components:
+  schemas:
+    Pokemon:
+      type: object
+      properties:
+        name: { type: string }
+        description: { type: string }
+      required: [name, description]
