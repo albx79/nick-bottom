@@ -26,4 +26,11 @@ class PokemonConnectorTest extends AbstractWiremockTest {
         assertThat(charizard.getFlavorTextEntries().get(153).getFlavorText())
                 .isEqualTo("２０００度的火焰在体内形成\n了漩涡。当它咆哮的时候，\n火力还会进一步上升。");
     }
+
+    @Test
+    void when_pokemon_not_found_then_return_null() {
+        Object result = connector.getSpecies("DOES NOT EXIST");
+
+        assertThat(result).isNull();
+    }
 }

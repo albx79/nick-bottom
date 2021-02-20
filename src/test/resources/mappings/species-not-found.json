@@ -1,0 +1,10 @@
+{
+  "priority": 100,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/api/v2/pokemon-species/.+"
+  },
+  "response": {
+    "status": 404
+  }
+}

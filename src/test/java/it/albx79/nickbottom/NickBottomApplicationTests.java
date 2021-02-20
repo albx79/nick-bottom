@@ -41,7 +41,7 @@ class NickBottomApplicationTests {
 
 	@Test
 	void getPokemonDescriptions() throws Exception {
-		Mockito.when(delegate.getSpecies(pokemon.getName())).thenReturn(ResponseEntity.ok(pokemon));
+		Mockito.when(delegate.getDescription(pokemon.getName())).thenReturn(ResponseEntity.ok(pokemon));
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/pokemon/{name}", pokemon.getName()))
 				.andExpect(MockMvcResultMatchers.status().isOk())

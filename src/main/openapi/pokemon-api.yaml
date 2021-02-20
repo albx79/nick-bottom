@@ -10,7 +10,7 @@ paths:
   /pokemon/{name}:
     get:
       summary: get pokemon description
-      operationId: getSpecies
+      operationId: getDescription
       parameters:
         - name: name
           in: path

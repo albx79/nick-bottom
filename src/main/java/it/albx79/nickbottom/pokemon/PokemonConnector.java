@@ -21,6 +21,9 @@ public class PokemonConnector {
                 val response = http.newCall(request).execute();
                 val body = response.body().byteStream()
         ) {
+            if (response.code() == 404) {
+                return null;
+            }
             return objectMapper.readValue(body, PokemonSpecies.class);
         }
     }
