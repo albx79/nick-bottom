@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>it.albx79</groupId>
 	<artifactId>nick-bottom</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>nick-bottom</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Provide Shakespearean Pokemon descriptions</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
