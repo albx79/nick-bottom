@@ -1,6 +1,6 @@
 # Nick Bottom
 
-Nick Bottom provides Shakespearean descriptions of Pokemons.
+Nick Bottom provides Shakespearean descriptions of Pokemon.
 
 ## Building
 
@@ -52,13 +52,34 @@ You should get an output similar to
     
 (the actual description is chosen randomly among the many available, so yours may be different).
 
+## Future Improvements
+
+There are two main areas in which Nick Bottom could be improved: configurability
+and caching.
+
+### Configurability
+
+At the moment, the PokeApi and FunTranslations API endpoints are hardcoded and don't
+use any credentials. Ideally, both the endpoint, and an optional secret key, should 
+be provided by a configuration file. 
+
+Customising the endpoint can be useful i.e.
+if there is a corporate proxy that should be used, or if a different server is
+required for e.g. UAT testing.
+
+### Caching
+
+Calling external APIs can be expensive, rate-limited, or both. Having a layer of
+caching before PokeApi and FunTranslations can save money and improve performance.
+
+A distributed cache such as [Redis](https://redis.io/) would be ideal.
+
 ## Behind the Name
 
 In the enchanted forest of "A Midsummer Night's Dream", filled with fauns, fairies, and
-other supernatural creatures, Pokemons don't appear too out of place.
+other supernatural creatures, Pokemon don't appear too out of place.
 
 Nick Bottom is a character from this comedy. He's a weaver, and the action of sending a
 request back and forth between several back-ends reminds me of threading a needle through
 fabric. Also, Nick Bottom was not gifted with great intelligence, very much like this
 software (though, in the case of software, simplicity is a good thing.) 
-
