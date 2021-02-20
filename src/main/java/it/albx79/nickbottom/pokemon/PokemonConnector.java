@@ -1,10 +1,27 @@
 package it.albx79.nickbottom.pokemon;
 
-import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.val;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
-@Service
+@RequiredArgsConstructor
 public class PokemonConnector {
-    public String getDescription(String name) {
-        return null;
+
+    private final String pokeApiUrl;
+    private final OkHttpClient http;
+    private final ObjectMapper objectMapper;
+
+    @SneakyThrows
+    public PokemonSpecies getSpecies(String name) {
+        Request request = new Request.Builder().get().url(pokeApiUrl + "/api/v2/pokemon-species/" + name).build();
+        try (
+                val response = http.newCall(request).execute();
+                val body = response.body().byteStream()
+        ) {
+            return objectMapper.readValue(body, PokemonSpecies.class);
+        }
     }
 }

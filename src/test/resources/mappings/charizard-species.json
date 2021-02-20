@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/api/v2/pokemon-species/charizard"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "charizard-species.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

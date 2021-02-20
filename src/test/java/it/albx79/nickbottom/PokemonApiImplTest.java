@@ -3,6 +3,8 @@ package it.albx79.nickbottom;
 import com.flextrade.jfixture.FixtureAnnotations;
 import com.flextrade.jfixture.annotations.Fixture;
 import it.albx79.nickbottom.pokemon.PokemonConnector;
+import it.albx79.nickbottom.pokemon.PokemonSpecies;
+import it.albx79.nickbottom.pokemon.RandomFlavorText;
 import it.albx79.nickbottom.rest.model.Pokemon;
 import it.albx79.nickbottom.shakespeare.ShakespeareConnector;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +24,8 @@ public class PokemonApiImplTest {
     @Fixture
     String name;
     @Fixture
+    PokemonSpecies species;
+    @Fixture
     String originalDescription;
     @Fixture
     String modifiedDescription;
@@ -29,21 +33,24 @@ public class PokemonApiImplTest {
     @Mock
     PokemonConnector pokemonConnector;
     @Mock
+    RandomFlavorText randomFlavorText;
+    @Mock
     ShakespeareConnector shakespeareConnector;
 
     @BeforeEach
     void setup() {
         FixtureAnnotations.initFixtures(this);
         MockitoAnnotations.openMocks(this);
-        pokemonApi = new PokemonApiImpl(pokemonConnector, shakespeareConnector);
+        pokemonApi = new PokemonApiImpl(pokemonConnector, randomFlavorText, shakespeareConnector);
     }
 
     @Test
     void returns_shakespearified_pokemon_description() {
         when(shakespeareConnector.shakespearify(originalDescription)).thenReturn(modifiedDescription);
-        when(pokemonConnector.getDescription(name)).thenReturn(originalDescription);
+        when(pokemonConnector.getSpecies(name)).thenReturn(species);
+        when(randomFlavorText.randomize(species, "en")).thenReturn(originalDescription);
 
-        ResponseEntity<Pokemon> result = pokemonApi.getDescription(name);
+        ResponseEntity<Pokemon> result = pokemonApi.getSpecies(name);
 
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(result.getBody().getName()).isEqualTo(name);
