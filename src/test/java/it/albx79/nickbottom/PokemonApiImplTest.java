@@ -14,6 +14,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.concurrent.ExecutionException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -50,8 +52,8 @@ public class PokemonApiImplTest {
     }
 
     @Test
-    void returns_shakespearified_pokemon_description() {
-        ResponseEntity<Pokemon> result = pokemonApi.getDescription(name);
+    void returns_shakespearified_pokemon_description() throws ExecutionException, InterruptedException {
+        ResponseEntity<Pokemon> result = pokemonApi.getDescription(name).get();
 
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(result.getBody().getName()).isEqualTo(name);
@@ -59,19 +61,19 @@ public class PokemonApiImplTest {
     }
 
     @Test
-    void given_that_translation_fails_then_return_original_description() {
+    void given_that_translation_fails_then_return_original_description() throws ExecutionException, InterruptedException {
         when(shakespeareConnector.shakespearify(originalDescription)).thenThrow(new RuntimeException());
 
-        Pokemon pokemon = pokemonApi.getDescription(name).getBody();
+        Pokemon pokemon = pokemonApi.getDescription(name).get().getBody();
 
         assertThat(pokemon.getDescription()).isEqualTo(originalDescription);
     }
 
     @Test
-    void given_that_pokemon_doesnt_exist_then_return_NOT_FOUND() {
+    void given_that_pokemon_doesnt_exist_then_return_NOT_FOUND() throws ExecutionException, InterruptedException {
         when(pokemonConnector.getSpecies(name)).thenReturn(null);
 
-        ResponseEntity<Pokemon> response = pokemonApi.getDescription(name);
+        ResponseEntity<Pokemon> response = pokemonApi.getDescription(name).get();
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }

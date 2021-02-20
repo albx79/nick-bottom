@@ -15,8 +15,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.concurrent.CompletableFuture;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -41,11 +47,16 @@ class NickBottomApplicationTests {
 
 	@Test
 	void getPokemonDescriptions() throws Exception {
-		Mockito.when(delegate.getDescription(pokemon.getName())).thenReturn(ResponseEntity.ok(pokemon));
+		Mockito.when(delegate.getDescription(pokemon.getName())).thenReturn(CompletableFuture.completedFuture(ResponseEntity.ok(pokemon)));
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/pokemon/{name}", pokemon.getName()))
-				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().json(asJsonString(pokemon)));
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/pokemon/{name}", pokemon.getName()))
+				.andExpect(request().asyncStarted())
+				.andExpect(status().isOk())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(result))
+				.andExpect(content().contentType("application/json"))
+				.andExpect(content().json(asJsonString(pokemon)));
 	}
 
 	@SneakyThrows

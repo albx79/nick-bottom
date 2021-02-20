@@ -92,6 +92,7 @@
 							<generateModelDocumentation>false</generateModelDocumentation>
 							<configOptions>
 								<java8>true</java8>
+								<async>true</async>
 								<delegatePattern>true</delegatePattern>
 								<interfaceOnly>false</interfaceOnly>
 								<implicitHeaders>false</implicitHeaders>
