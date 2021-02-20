@@ -4,7 +4,16 @@ Nick Bottom provides Shakespearean descriptions of Pokemons.
 
 ## Building
 
-This project provides a Maven wrapper (`mvnw`) to ease the build process.
+If you already have Java 11 installed, you can build using the provided
+Maven wrapper (`mvnw`). Otherwise, you can build using only 
+[Docker](https://www.docker.com/). Either way, the output of the build
+will be a docker image called `nick-bottom:1.0.0`.
+
+### with Docker
+
+    docker run -it --rm --name my-maven-project -v /var/run/docker.sock:/var/run/docker.sock  -v "$PWD":/usr/src/mymaven -w /usr/src/mymaven maven:3.6-jdk-11 mvn spring-boot:build-image
+
+### with Maven 
 
 Building requires Java 11 installed. Run `./mvnw -version` to check your
 current Java version. If Java 11 is installed but not detected, make sure 
